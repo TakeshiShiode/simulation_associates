@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+
+<html lang="ja" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Papyrusのインストール &#8212; Book Review 1.0 ドキュメント</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/classic.css?v=514cf933" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=01f86d93" />
+    
+    <script src="../_static/documentation_options.js?v=6bbe880f"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/translations.js?v=4dbe4bdc"></script>
+    
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="検索" href="../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>ナビゲーション</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="総合索引"
+             accesskey="I">索引</a></li>
+        <li class="nav-item nav-item-0"><a href="../index.html">Book Review 1.0 ドキュメント</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Papyrusのインストール</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="papyrus">
+<h1>Papyrusのインストール<a class="headerlink" href="#papyrus" title="Link to this heading">¶</a></h1>
+<dl class="field-list simple">
+<dt class="field-odd">Papyrus<span class="colon">:</span></dt>
+<dd class="field-odd"><p>UML作成用プラグイン</p>
+</dd>
+<dt class="field-even">Moka<span class="colon">:</span></dt>
+<dd class="field-even"><p>UMLアニメーション用プラグイン(要Papyrus)</p>
+</dd>
+</dl>
+<section id="id4">
+<h2>はじめに<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h2>
+<p>Papyrusはクラス図やステートマシン、アクティビティ図などを作成、編集できるEclipse上のプラグインです。ホームページは<a class="reference external" href="https://eclipse.dev/papyrus/?P=136&amp;L=EN&amp;context=print">Papyrus</a>から参照できます。</p>
+<p>Papyrusのホームページへ行くと&quot;ダウンロード&quot;の項からPapyrusプラグインインストール済みのパッケージ環境がダウンロードできるのですが、こちらはMokaとの相性が悪く、後述のサンプルプログラムがうまく動きませんでした。そこで、ここではMokaプラグインの動作が確認済みのeclipseバージョン(とりあえずCDTパッケージ)をダウンロードして、そこにPapyrusとMokaの各プラグインを追加していく手順を取ります。</p>
+</section>
+<section id="eclipse">
+<h2>eclipseのインストール<a class="headerlink" href="#eclipse" title="Link to this heading">¶</a></h2>
+<section id="id5">
+<h3>まずMoka動作実績の確認<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h3>
+<p><a class="reference external" href="https://marketplace.eclipse.org/content/papyrus-moka">Moka</a>プラグインのホームページへ行って、動作実績のあるバージョンを確認します。&quot;Eclipse Versions:&quot;の項目にいくつか確認バージョンがあります。<a class="reference external" href="https://wiki.eclipse.org/Papyrus/UserGuide/ModelExecution">Mokaのユーザーガイド</a>のページも参考に今回は2019_03版のeclipseとしました。インストールはダウンロードして適当なディレクトリに置けば良いので省略。</p>
+</section>
+</section>
+<section id="id6">
+<h2>Papyrusプラグインの追加<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h2>
+<p>&quot;help&quot; -&gt; &quot;New Soft Ware&quot;でPapyrusプラグインを指定します。<a class="reference external" href="https://eclipse.dev/papyrus/download.html">Papyrusダウンロードページ</a>の&quot;Previous Rleases Update Sites&quot;に過去のバージョンがありますので、今回のeclipse_2019_03版に合わせて、<a class="reference external" href="https://archive.eclipse.org/modeling/mdt/papyrus/updates/releases/2019-03/">Eclipse Papyrus 2019-03 (4.3.X)</a>を選択します。リンクを開くと&quot;help&quot; -&gt; &quot;New Soft Ware&quot;へのダウンロードアドレスの設定方法がありますので、これに従い<code class="xref std std-numref docutils literal notranslate"><span class="pre">fig1</span></code>のように&quot;New Soft Ware&quot;を設定してプラグインを追加します。</p>
+<figure class="align-right align-default" id="id8">
+<span id="fig1"></span><a class="reference internal image-reference" href="dummy/図1.svg"><img alt="dummy/図1.svg" src="dummy/図1.svg" /></a>
+<figcaption>
+<p><span class="caption-text">:Papyrusのバージョンを指定してインストール</span><a class="headerlink" href="#id8" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="id7">
+<h2>Mokaプラグインの追加<a class="headerlink" href="#id7" title="Link to this heading">¶</a></h2>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../index.html">目次</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Papyrusのインストール</a><ul>
+<li><a class="reference internal" href="#id4">はじめに</a></li>
+<li><a class="reference internal" href="#eclipse">eclipseのインストール</a><ul>
+<li><a class="reference internal" href="#id5">まずMoka動作実績の確認</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id6">Papyrusプラグインの追加</a></li>
+<li><a class="reference internal" href="#id7">Mokaプラグインの追加</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>このページ</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/dummy/papyrus_moka_setup.rst.txt"
+            rel="nofollow">ソースコードを表示</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">クイック検索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="検索" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>ナビゲーション</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="総合索引"
+             >索引</a></li>
+        <li class="nav-item nav-item-0"><a href="../index.html">Book Review 1.0 ドキュメント</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Papyrusのインストール</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; 著作権 2023, sphinx-users.jp.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.5.
+    </div>
+  </body>
+</html>
