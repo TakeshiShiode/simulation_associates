@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+
+<html lang="ja" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>エミュレータの作成とQEMUへの追加 &#8212; シミュレーション同好会 1.0 ドキュメント</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=514cf933" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=01f86d93" />
+    
+    <script src="_static/documentation_options.js?v=6bbe880f"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/translations.js?v=4dbe4bdc"></script>
+    
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="検索" href="search.html" />
+    <link rel="next" title="サンプルプログラムの作成と実行" href="sample_prg.html" />
+    <link rel="prev" title="QEMUによるSTM32F746マイコンのエミュレート" href="qemu-develop.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>ナビゲーション</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="総合索引"
+             accesskey="I">索引</a></li>
+        <li class="right" >
+          <a href="sample_prg.html" title="サンプルプログラムの作成と実行"
+             accesskey="N">次へ</a> |</li>
+        <li class="right" >
+          <a href="qemu-develop.html" title="QEMUによるSTM32F746マイコンのエミュレート"
+             accesskey="P">前へ</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">シミュレーション同好会 1.0 ドキュメント</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="qemu-develop.html" accesskey="U">QEMUによるSTM32F746マイコンのエミュレート</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">エミュレータの作成とQEMUへの追加</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="qemu">
+<h1>エミュレータの作成とQEMUへの追加<a class="headerlink" href="#qemu" title="Link to this heading">¶</a></h1>
+<dl class="field-list simple">
+<dt class="field-odd">エミュレータ<span class="colon">:</span></dt>
+<dd class="field-odd"><p>QEMU-8.1.0</p>
+</dd>
+</dl>
+<section id="id1">
+<h2>概要<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h2>
+<p>QEMUを用いてSTM32F746ZGを想定したエミュレータを作成します。
+ベース環境はnetduino2、もしくはolimex-stm32-h405といったSTM32F405環境を参考に
+&quot;nucleo-stm32-f746&quot;としてarmエミュレータへ追加しました(qemu-system-arm.exe)。
+以下、変更内容です。</p>
+</section>
+<section id="id2">
+<h2>変更内容<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h2>
+<table class="docutils align-default" id="id3">
+<caption><span class="caption-number">表 1 </span><span class="caption-text">nucleo-stm32-f746用の変更および追加項目</span><a class="headerlink" href="#id3" title="Link to this table">¶</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>項目/名称</p></th>
+<th class="head"><p>olimex-stm32-h405</p></th>
+<th class="head"><p>nucleo-stm32-f746</p></th>
+<th class="head"><p>備考</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>SOC(想定)</p></td>
+<td><p>STM32F405H</p></td>
+<td><p>STM32F746ZG</p></td>
+<td><p><cite>-</cite></p></td>
+</tr>
+<tr class="row-odd"><td><p>cpu</p></td>
+<td><p>cortex-m4</p></td>
+<td><p>cortex-m7</p></td>
+<td><p><cite>-</cite></p></td>
+</tr>
+<tr class="row-even"><td><p>SRAM</p></td>
+<td><p>0x20000000～0x20020000</p></td>
+<td><p>0x20000000～0x20050000</p></td>
+<td><p>128⇒320KBへ拡張</p></td>
+</tr>
+<tr class="row-odd"><td><p>タイマ</p></td>
+<td><p>TIM2～TIM4</p></td>
+<td><p>TIM2～TIM14</p></td>
+<td><p>ただしTIM1とTIM8を除く</p></td>
+</tr>
+<tr class="row-even"><td><p>RCC</p></td>
+<td><p><cite>-</cite></p></td>
+<td><p>モジュール追加</p></td>
+<td><p>レジスタR/W程度</p></td>
+</tr>
+<tr class="row-odd"><td><p>Flash_IF</p></td>
+<td><p><cite>-</cite></p></td>
+<td><p>モジュール追加</p></td>
+<td><p>レジスタR/W程度</p></td>
+</tr>
+<tr class="row-even"><td><p>UART</p></td>
+<td><p>ch1～7</p></td>
+<td><p>レジスタ追加</p></td>
+<td><p>レジスタR/W程度</p></td>
+</tr>
+<tr class="row-odd"><td><p>NVIC</p></td>
+<td><p><cite>-</cite></p></td>
+<td><p>優先度レジスタ(0xE000E400)変更</p></td>
+<td><p>※マスク値(0xFF⇒0xF0)</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="nvic">
+<h2>NVIC優先度レジスタの変更について<a class="headerlink" href="#nvic" title="Link to this heading">¶</a></h2>
+<p>サンプルプログラム側のFreeRTOSの起動時に&quot;xPortStartScheduler()&quot;にて
+&quot;configASSERT&quot;に落ちてしまうため、優先度レジスタを変更しています。</p>
+<p>STMさんのサイトより <a class="reference external" href="https://www.st.com/en/microcontrollers-microprocessors/stm32f7x6/documentation.html">STM32F7x6関連のドキュメント</a> 「PM0253」の
+4.2_ネスト化されたベクタ割込みコントローラ-&gt;4.2.7_割込み優先度レジスタ-&gt;表_47. IPRビット割当て
+を参照し、私なりに解釈すると、</p>
+<p>&quot;優先度レジスタは0～255までの値を取れるがcortex-m7では割込み数mが240個のため、ここに0xFF(255)を書いても
+読み値は0xF0(240)が返ります&quot;</p>
+<p>ということだと思われます(実機ではそうでした)。
+ですがQEMU側ではここに255が設定できてしまうためASSERTとなってしまいます。</p>
+<p>というわけで、E000E400のマスク値を0xF0としています。
+本件については、QEMUサイト側でも課題提起されていますのでいずれ対応されるかもしれません。<a class="reference external" href="https://gitlab.com/qemu-project/qemu/-/issues/1122">Issues_#1122</a> 参照。</p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">目次</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">エミュレータの作成とQEMUへの追加</a><ul>
+<li><a class="reference internal" href="#id1">概要</a></li>
+<li><a class="reference internal" href="#id2">変更内容</a></li>
+<li><a class="reference internal" href="#nvic">NVIC優先度レジスタの変更について</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>前のトピックへ</h4>
+    <p class="topless"><a href="qemu-develop.html"
+                          title="前の章へ">QEMUによるSTM32F746マイコンのエミュレート</a></p>
+  </div>
+  <div>
+    <h4>次のトピックへ</h4>
+    <p class="topless"><a href="sample_prg.html"
+                          title="次の章へ">サンプルプログラムの作成と実行</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>このページ</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/nucleo-stm32f746.rst.txt"
+            rel="nofollow">ソースコードを表示</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">クイック検索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="検索" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>ナビゲーション</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="総合索引"
+             >索引</a></li>
+        <li class="right" >
+          <a href="sample_prg.html" title="サンプルプログラムの作成と実行"
+             >次へ</a> |</li>
+        <li class="right" >
+          <a href="qemu-develop.html" title="QEMUによるSTM32F746マイコンのエミュレート"
+             >前へ</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">シミュレーション同好会 1.0 ドキュメント</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="qemu-develop.html" >QEMUによるSTM32F746マイコンのエミュレート</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">エミュレータの作成とQEMUへの追加</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; 著作権 .
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.5.
+    </div>
+  </body>
+</html>
