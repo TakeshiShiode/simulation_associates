@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>UARTを使ったシリアルデバッグ機能の使い方 &#8212; シミュレーション同好会 1.0 ドキュメント</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=89b800e6" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=01f86d93" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=ac869c47"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/translations.js?v=4dbe4bdc"></script>
+    
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="検索" href="search.html" />
+    <link rel="prev" title="ダウンロードはこちらから" href="sample_download.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>ナビゲーション</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="総合索引"
+             accesskey="I">索引</a></li>
+        <li class="right" >
+          <a href="sample_download.html" title="ダウンロードはこちらから"
+             accesskey="P">前へ</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">シミュレーション同好会 1.0 ドキュメント</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="qemu-develop.html" accesskey="U">QEMUによるSTM32F746マイコンのエミュレート</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">UARTを使ったシリアルデバッグ機能の使い方</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="uart">
+<h1>UARTを使ったシリアルデバッグ機能の使い方<a class="headerlink" href="#uart" title="この見出しへのパーマリンク">¶</a></h1>
+<dl class="field-list simple">
+<dt class="field-odd">使用UARTチャネル<span class="colon">:</span></dt>
+<dd class="field-odd"><p>USART3(0x40004800)</p>
+</dd>
+</dl>
+<p>今回のSTM32F746ZGを想定したエミュレータではUARTチャンネルを8ch設けています
+ここでは、その中のUSART3を用いて評価用のシリアルデバッグ(いわゆるprinft)機能の使い方を説明します。</p>
+<section id="qemuuart">
+<h2>QEMUのUARTを介して内外部のターミナルに出力する仕組み<a class="headerlink" href="#qemuuart" title="この見出しへのパーマリンク">¶</a></h2>
+<p>QEMUにはchardev(キャラクタデバイス)という機能が設けられており、これをエミュレータ作成時に必要なデバイスへ割り当てることで、
+外部へのデータ出力機能を持たせています。chardevそのものは関数 serial_hd(int i)で呼び出し、これを
+各デバイスに割り当てています。</p>
+<section id="chardev">
+<h3>各エミュレータにおけるchardevの割り当て<a class="headerlink" href="#chardev" title="この見出しへのパーマリンク">¶</a></h3>
+<p>STM32F746エミュレータでの割り当て方法は以下のようになっています。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">USART部へのchardev割り当て</span><span class="p">(</span><span class="n">QEMU</span><span class="o">/</span><span class="n">hw</span><span class="o">/</span><span class="n">arm</span><span class="o">/</span><span class="n">stm32f746_soc</span><span class="o">.</span><span class="n">c</span><span class="p">)</span>
+<span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">STM_NUM_USARTS</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+     <span class="n">dev</span> <span class="o">=</span> <span class="n">DEVICE</span><span class="p">(</span><span class="o">&amp;</span><span class="p">(</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">usart</span><span class="p">[</span><span class="n">i</span><span class="p">]));</span>　<span class="o">/*</span> <span class="n">各チャネルのデバイスを呼び出し</span> <span class="o">*/</span>
+     <span class="n">qdev_prop_set_chr</span><span class="p">(</span><span class="n">dev</span><span class="p">,</span> <span class="s2">&quot;chardev&quot;</span><span class="p">,</span> <span class="n">serial_hd</span><span class="p">(</span><span class="n">i</span><span class="p">));</span> <span class="o">/*</span> <span class="n">chardevと紐付け</span> <span class="o">*/</span>
+     <span class="p">:</span>
+     <span class="n">以下省略</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h3>デバイス側でのchardev使用部分<a class="headerlink" href="#id2" title="この見出しへのパーマリンク">¶</a></h3>
+<p>chardevが割り当てられたデバイス側では、それをどのように使用するかを設定します。
+今回のUSART3では送信レジスタ(TDR)へライトされたデータを出力するようにしました。
+なお、ハードウェア仕様にならって送信中やビジーを表現する各種ステータスレジスタがある場合は都度設定が必要です。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">USART側のchardevへデータを出力する部分</span><span class="p">(</span><span class="n">QEMU</span><span class="o">/</span><span class="n">hw</span><span class="o">/</span><span class="n">char</span><span class="o">/</span><span class="n">stm32f746_uart</span><span class="o">.</span><span class="n">c</span><span class="p">)</span>
+<span class="k">case</span> <span class="n">USART_TDR</span><span class="p">:</span>
+     <span class="k">if</span> <span class="p">(</span><span class="n">value</span> <span class="o">&lt;</span> <span class="mh">0xF000</span><span class="p">)</span> <span class="p">{</span>
+         <span class="o">/*</span> <span class="n">ライトデータの受け取り</span><span class="o">*/</span>
+         <span class="n">ch</span> <span class="o">=</span> <span class="n">value</span><span class="p">;</span>
+         <span class="o">/*</span> <span class="n">割り当てられたchardev</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s</span><span class="o">-&gt;</span><span class="nb">chr</span><span class="p">)</span><span class="n">へ専用APIで出力</span> <span class="o">*/</span>
+         <span class="n">qemu_chr_fe_write_all</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s</span><span class="o">-&gt;</span><span class="nb">chr</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ch</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+         <span class="o">/*</span> <span class="n">ステータスレジスタを</span><span class="s2">&quot;送信完了&quot;</span><span class="n">にする</span> <span class="o">*/</span>
+         <span class="n">s</span><span class="o">-&gt;</span><span class="n">usart_isr</span> <span class="o">|=</span> <span class="n">USART_SR_TC</span><span class="p">;</span>
+     <span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id3">
+<h2>外部ターミナル及びコンソールへの表示設定<a class="headerlink" href="#id3" title="この見出しへのパーマリンク">¶</a></h2>
+<p>準備したchardev出力を利用するためのコンソールおよびターミナルの設定を見ていきます。</p>
+<section id="qemu">
+<h3>QEMUコンソールの場合<a class="headerlink" href="#qemu" title="この見出しへのパーマリンク">¶</a></h3>
+<p>QEMUを起動すると以下のようなコンソール画面が立ち上がってきます。ここでViewメニューを参照すると、&quot;compatmonitor0&quot;、&quot;serial0&quot;、
+&quot;parallel0&quot;など、いくつか出力先を選ぶことができます。今回のシリアルデバッグの対象となるのは&quot;seral0～&quot;の部分です。</p>
+<figure class="align-center" id="id5">
+<span id="fig19"></span><a class="reference internal image-reference" href="_images/fig19.jpg"><img alt="_images/fig19.jpg" src="_images/fig19.jpg" style="width: 449.4px; height: 308.7px;" /></a>
+<figcaption>
+<p><span class="caption-text">:QEMUコンソール画面</span><a class="headerlink" href="#id5" title="この画像へのパーマリンク">¶</a></p>
+</figcaption>
+</figure>
+<p>さて、この&quot;serial0～&quot;部分ですが、前述のserialserial_hd(int i)と紐ついていて、serialserial_hd(0)がserial0、
+serialserial_hd(1)がserial1のようになっています。STM32F746マイコンにおいては以下のようになります。</p>
+<table class="docutils align-default" id="id6">
+<caption><span class="caption-text">serial_hd(ch)とUART(ch)の対応</span><a class="headerlink" href="#id6" title="このテーブルへのパーマリンク">¶</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>serial_ch</p></th>
+<th class="head"><p>USART_ch</p></th>
+<th class="head"><p>備考</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>serial0</p></td>
+<td><p>USART1</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>serial1</p></td>
+<td><p>USART2</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>serial2</p></td>
+<td><p>USART3</p></td>
+<td><p>シリアルデバッガとして使用</p></td>
+</tr>
+<tr class="row-odd"><td><p>:</p></td>
+<td><p>:</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>serial8</p></td>
+<td><p>UART8</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>というわけでQEMUでUSART3を出力するには、serial2を表示する必要があります。これを実現するために、QEMUの実行コマンド
+に&quot;-serial&quot;設定を追加します。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">QEMU起動コマンドに</span> <span class="s2">&quot;-serial vc&quot;</span><span class="n">を追加</span>
+<span class="o">./</span><span class="n">qemu</span><span class="o">-</span><span class="n">system</span><span class="o">-</span><span class="n">arm</span> <span class="o">-</span><span class="n">S</span> <span class="o">-</span><span class="n">gdb</span> <span class="n">tcp</span><span class="p">::</span><span class="mi">1234</span> <span class="o">-</span><span class="n">M</span> <span class="n">nucleo</span><span class="o">-</span><span class="n">stm32</span><span class="o">-</span><span class="n">f746</span> <span class="o">-</span><span class="n">serial</span> <span class="n">vc</span> <span class="o">-</span><span class="n">serial</span> <span class="n">vc</span> <span class="o">-</span><span class="n">serial</span> <span class="n">vc</span>
+<span class="o">-</span><span class="n">kernel</span> <span class="o">/</span><span class="n">c</span><span class="o">/</span><span class="n">ワークスペースのパス</span><span class="o">/</span><span class="n">Debug</span><span class="o">/</span><span class="n">nucleo</span><span class="o">-</span><span class="n">stm32f746</span><span class="o">.</span><span class="n">elf</span>
+</pre></div>
+</div>
+<p>コマンド中に&quot;-serial vc&quot;が3セット含まれています。これは&quot;serial0&quot;、&quot;serial1&quot;、&quot;serial2&quot;をQEMUのViewメニューに表示するためです。
+以下にserialコマンドの数を変えた場合にQEMUコンソールを示します。</p>
+<figure class="align-center" id="id7">
+<span id="fig18"></span><a class="reference internal image-reference" href="_images/fig18.jpg"><img alt="_images/fig18.jpg" src="_images/fig18.jpg" style="width: 965.5px; height: 220.5px;" /></a>
+<figcaption>
+<p><span class="caption-text">:serialコマンド数とViewメニュー中のseiral(ch)の対応</span><a class="headerlink" href="#id7" title="この画像へのパーマリンク">¶</a></p>
+</figcaption>
+</figure>
+<p>serial2を表示した状態でサンプルプログラムを実行すると、デバッグ表示が確認できます。</p>
+<figure class="align-center" id="id8">
+<span id="fig20"></span><a class="reference internal image-reference" href="_images/fig20.jpg"><img alt="_images/fig20.jpg" src="_images/fig20.jpg" style="width: 449.4px; height: 308.7px;" /></a>
+<figcaption>
+<p><span class="caption-text">:デバッグ出力の確認</span><a class="headerlink" href="#id8" title="この画像へのパーマリンク">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="id4">
+<h3>MSYS2に出力する場合<a class="headerlink" href="#id4" title="この見出しへのパーマリンク">¶</a></h3>
+<p>QEMUを実行しているMSYS2に出力する場合はserial2のところのコマンドを以下のようにします。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;-serial vc&quot;</span><span class="n">を</span><span class="s2">&quot;-serial mon:stdio&quot;</span><span class="n">に変更</span>
+<span class="o">./</span><span class="n">qemu</span><span class="o">-</span><span class="n">system</span><span class="o">-</span><span class="n">arm</span> <span class="o">-</span><span class="n">S</span> <span class="o">-</span><span class="n">gdb</span> <span class="n">tcp</span><span class="p">::</span><span class="mi">1234</span> <span class="o">-</span><span class="n">M</span> <span class="n">nucleo</span><span class="o">-</span><span class="n">stm32</span><span class="o">-</span><span class="n">f746</span> <span class="o">-</span><span class="n">serial</span> <span class="n">vc</span> <span class="o">-</span><span class="n">serial</span> <span class="n">vc</span> <span class="o">-</span><span class="n">serial</span> <span class="n">mon</span><span class="p">:</span><span class="n">stdio</span>
+<span class="o">-</span><span class="n">kernel</span> <span class="o">/</span><span class="n">c</span><span class="o">/</span><span class="n">ワークスペースのパス</span><span class="o">/</span><span class="n">Debug</span><span class="o">/</span><span class="n">nucleo</span><span class="o">-</span><span class="n">stm32f746</span><span class="o">.</span><span class="n">elf</span>
+</pre></div>
+</div>
+<p>こうすると、QEMU側のコンソールから&quot;seiral2&quot;が消えて、MSYS2側のターミナルにデバッグ出力されます。</p>
+<figure class="align-center" id="id9">
+<span id="fig21"></span><a class="reference internal image-reference" href="_images/fig21.jpg"><img alt="_images/fig21.jpg" src="_images/fig21.jpg" style="width: 742.1999999999999px; height: 264.59999999999997px;" /></a>
+<figcaption>
+<p><span class="caption-text">:MSYS2側にデバッグ出力</span><a class="headerlink" href="#id9" title="この画像へのパーマリンク">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="teraterm">
+<h3>teratermに出力する場合<a class="headerlink" href="#teraterm" title="この見出しへのパーマリンク">¶</a></h3>
+<p>teratermに出力する場合は &quot;-serial&quot;コマンドにtelnetオプションを追加してポート番号を指定します。
+QEMUの起動コマンドは以下のようになります。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;-serial vc&quot;</span><span class="n">を</span><span class="s2">&quot;-serial telnet:localhost:4321,server,nowait&quot;</span><span class="n">に変更</span>
+<span class="o">./</span><span class="n">qemu</span><span class="o">-</span><span class="n">system</span><span class="o">-</span><span class="n">arm</span> <span class="o">-</span><span class="n">S</span> <span class="o">-</span><span class="n">gdb</span> <span class="n">tcp</span><span class="p">::</span><span class="mi">1234</span> <span class="o">-</span><span class="n">M</span> <span class="n">nucleo</span><span class="o">-</span><span class="n">stm32</span><span class="o">-</span><span class="n">f746</span> <span class="o">-</span><span class="n">serial</span> <span class="n">vc</span> <span class="o">-</span><span class="n">serial</span> <span class="n">vc</span> <span class="o">-</span><span class="n">serial</span> <span class="n">telnet</span><span class="p">:</span><span class="n">localhost</span><span class="p">:</span><span class="mi">4321</span><span class="p">,</span><span class="n">server</span><span class="p">,</span><span class="n">nowait</span>
+<span class="o">-</span><span class="n">kernel</span> <span class="o">/</span><span class="n">c</span><span class="o">/</span><span class="n">ワークスペースのパス</span><span class="o">/</span><span class="n">Debug</span><span class="o">/</span><span class="n">nucleo</span><span class="o">-</span><span class="n">stm32f746</span><span class="o">.</span><span class="n">elf</span>
+</pre></div>
+</div>
+<p>デバッガのポート番号を4321に設定したので、これをteraterm側から参照します。</p>
+<figure class="align-center" id="id10">
+<span id="fig22"></span><a class="reference internal image-reference" href="_images/fig22.jpg"><img alt="_images/fig22.jpg" src="_images/fig22.jpg" style="width: 461.29999999999995px; height: 340.2px;" /></a>
+<figcaption>
+<p><span class="caption-text">:teraterm側の接続設定</span><a class="headerlink" href="#id10" title="この画像へのパーマリンク">¶</a></p>
+</figcaption>
+</figure>
+<p>サンプルプログラムを実行すると、teraterm側にデバッグ出力されます。</p>
+<figure class="align-center" id="id11">
+<span id="fig23"></span><a class="reference internal image-reference" href="_images/fig23.jpg"><img alt="_images/fig23.jpg" src="_images/fig23.jpg" style="width: 461.29999999999995px; height: 340.2px;" /></a>
+<figcaption>
+<p><span class="caption-text">:teratermでの出力確認</span><a class="headerlink" href="#id11" title="この画像へのパーマリンク">¶</a></p>
+</figcaption>
+</figure>
+<p>teratermだと、ログをリアルタイム保存する機能などもあるため何かと便利かもしれませんね。</p>
+<p>以上、UART機能を利用したデバッグ機能の確認でした。</p>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">目次</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">UARTを使ったシリアルデバッグ機能の使い方</a><ul>
+<li><a class="reference internal" href="#qemuuart">QEMUのUARTを介して内外部のターミナルに出力する仕組み</a><ul>
+<li><a class="reference internal" href="#chardev">各エミュレータにおけるchardevの割り当て</a></li>
+<li><a class="reference internal" href="#id2">デバイス側でのchardev使用部分</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id3">外部ターミナル及びコンソールへの表示設定</a><ul>
+<li><a class="reference internal" href="#qemu">QEMUコンソールの場合</a></li>
+<li><a class="reference internal" href="#id4">MSYS2に出力する場合</a></li>
+<li><a class="reference internal" href="#teraterm">teratermに出力する場合</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>前のトピックへ</h4>
+    <p class="topless"><a href="sample_download.html"
+                          title="前の章へ">ダウンロードはこちらから</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>このページ</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/serial_debug.rst.txt"
+            rel="nofollow">ソースコードを表示</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">クイック検索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="検索" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>ナビゲーション</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="総合索引"
+             >索引</a></li>
+        <li class="right" >
+          <a href="sample_download.html" title="ダウンロードはこちらから"
+             >前へ</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">シミュレーション同好会 1.0 ドキュメント</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="qemu-develop.html" >QEMUによるSTM32F746マイコンのエミュレート</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">UARTを使ったシリアルデバッグ機能の使い方</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; 著作権 .
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    </div>
+  </body>
+</html>

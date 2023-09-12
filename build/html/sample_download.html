@@ -1,22 +1,23 @@
 <!DOCTYPE html>
 
-<html lang="ja" data-content_root="./">
+<html lang="ja">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>ダウンロードはこちらから &#8212; シミュレーション同好会 1.0 ドキュメント</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=514cf933" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=89b800e6" />
     <link rel="stylesheet" type="text/css" href="_static/custom.css?v=01f86d93" />
     
-    <script src="_static/documentation_options.js?v=6bbe880f"></script>
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=ac869c47"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
     <script src="_static/translations.js?v=4dbe4bdc"></script>
     
     <link rel="index" title="索引" href="genindex.html" />
     <link rel="search" title="検索" href="search.html" />
+    <link rel="next" title="UARTを使ったシリアルデバッグ機能の使い方" href="serial_debug.html" />
     <link rel="prev" title="サンプルプログラムの作成と実行" href="sample_prg.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -25,6 +26,9 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="総合索引"
              accesskey="I">索引</a></li>
+        <li class="right" >
+          <a href="serial_debug.html" title="UARTを使ったシリアルデバッグ機能の使い方"
+             accesskey="N">次へ</a> |</li>
         <li class="right" >
           <a href="sample_prg.html" title="サンプルプログラムの作成と実行"
              accesskey="P">前へ</a> |</li>
@@ -40,7 +44,7 @@
           <div class="body" role="main">
             
   <section id="id1">
-<h1>ダウンロードはこちらから<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h1>
+<h1>ダウンロードはこちらから<a class="headerlink" href="#id1" title="この見出しへのパーマリンク">¶</a></h1>
 <dl class="field-list simple">
 <dt class="field-odd">エミュレータ<span class="colon">:</span></dt>
 <dd class="field-odd"><p>QEMU-8.1.0</p>
@@ -50,17 +54,17 @@
 </dd>
 </dl>
 <section id="id3">
-<h2>サンプルプログラムダウンロード<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h2>
+<h2>サンプルプログラムダウンロード<a class="headerlink" href="#id3" title="この見出しへのパーマリンク">¶</a></h2>
 <p><a class="reference external" href="https://github.com/TakeshiShiode/QEMU-develop.git">Githubのリポジトリ</a> からまとめてダウンロードできます。</p>
 </section>
 <section id="id4">
-<h2>ソフトウェア機材類<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h2>
+<h2>ソフトウェア機材類<a class="headerlink" href="#id4" title="この見出しへのパーマリンク">¶</a></h2>
 <ul class="simple">
 <li><p><a class="reference external" href="https://www.msys2.org/">MSYS2</a> : QEMUのmake用。makeについての説明は <a class="reference external" href="https://wiki.qemu.org/Hosts/W32#Native_builds_with_MSYS2">こちら</a> (Native builds with MSYS2の項目参照)</p></li>
 </ul>
 </section>
 <section id="qemumake">
-<h2>QEMUのmakeについて<a class="headerlink" href="#qemumake" title="Link to this heading">¶</a></h2>
+<h2>QEMUのmakeについて<a class="headerlink" href="#qemumake" title="この見出しへのパーマリンク">¶</a></h2>
 <p>makeも前述のNative builds with MSYS2の項に記載がありますが、全makeされるため時間が掛かってしまいます。
 以下のように、arm周りに限定すると若干早くなります。</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">MSYS2上でQEMUを置いたディレクトリに移動して</span>
@@ -101,6 +105,11 @@
     <p class="topless"><a href="sample_prg.html"
                           title="前の章へ">サンプルプログラムの作成と実行</a></p>
   </div>
+  <div>
+    <h4>次のトピックへ</h4>
+    <p class="topless"><a href="serial_debug.html"
+                          title="次の章へ">UARTを使ったシリアルデバッグ機能の使い方</a></p>
+  </div>
   <div role="note" aria-label="source link">
     <h3>このページ</h3>
     <ul class="this-page-menu">
@@ -129,6 +138,9 @@
           <a href="genindex.html" title="総合索引"
              >索引</a></li>
         <li class="right" >
+          <a href="serial_debug.html" title="UARTを使ったシリアルデバッグ機能の使い方"
+             >次へ</a> |</li>
+        <li class="right" >
           <a href="sample_prg.html" title="サンプルプログラムの作成と実行"
              >前へ</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">シミュレーション同好会 1.0 ドキュメント</a> &#187;</li>
@@ -138,7 +150,7 @@
     </div>
     <div class="footer" role="contentinfo">
     &#169; 著作権 .
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.5.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
     </div>
   </body>
 </html>
