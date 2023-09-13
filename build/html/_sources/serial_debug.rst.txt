@@ -110,6 +110,7 @@ serialserial_hd(1)がserial1のようになっています。STM32F746マイコ�
 
    :serialコマンド数とViewメニュー中のseiral(ch)の対応
 
+
 serial2を表示した状態でサンプルプログラムを実行すると、デバッグ表示が確認できます。
 
 .. _Fig20:
