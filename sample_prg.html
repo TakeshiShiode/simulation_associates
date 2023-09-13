@@ -27,7 +27,8 @@
     
     <link rel="index" title="索引" href="genindex.html" />
     <link rel="search" title="検索" href="search.html" />
-    <link rel="prev" title="QEMUによるSTM32F746マイコンのエミュレート" href="nucleo-stm32f746.html" /> 
+    <link rel="next" title="ダウンロードはこちらから" href="sample_download.html" />
+    <link rel="prev" title="エミュレータの作成とQEMUへの追加" href="nucleo-stm32f746.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>ナビゲーション</h3>
@@ -36,9 +37,13 @@
           <a href="genindex.html" title="総合索引"
              accesskey="I">索引</a></li>
         <li class="right" >
-          <a href="nucleo-stm32f746.html" title="QEMUによるSTM32F746マイコンのエミュレート"
+          <a href="sample_download.html" title="ダウンロードはこちらから"
+             accesskey="N">次へ</a> |</li>
+        <li class="right" >
+          <a href="nucleo-stm32f746.html" title="エミュレータの作成とQEMUへの追加"
              accesskey="P">前へ</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">シミュレーション同好会 1.0 ドキュメント</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="qemu-develop.html" accesskey="U">QEMUによるSTM32F746マイコンのエミュレート</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">サンプルプログラムの作成と実行</a></li> 
       </ul>
     </div>  
@@ -216,7 +221,7 @@ SysTick以外のタイマの使用を推奨とのことですので、
 </section>
 <section id="rtos">
 <h3>デバイス初期化とRTOS起動<a class="headerlink" href="#rtos" title="Link to this heading">¶</a></h3>
-<p>main関数まで来ました。ここでシステムクロックやIO、UART(気分で入れてみた)などのデバイス類を初期化した後、FreeRTOSを起動します。</p>
+<p>main関数まで来ました。ここでシステムクロックやIO、UART3(シリアルデバッグ用)などのデバイス類を初期化した後、FreeRTOSを起動します。</p>
 <figure class="align-center" id="fig15">
 <a class="reference internal image-reference" href="_images/fig15.jpg"><img alt="_images/fig15.jpg" src="_images/fig15.jpg" style="width: 611.15px; height: 482.8px;" /></a>
 </figure>
@@ -228,10 +233,10 @@ SysTick以外のタイマの使用を推奨とのことですので、
 </section>
 <section id="id12">
 <h3>テストタスクの動作確認<a class="headerlink" href="#id12" title="Link to this heading">¶</a></h3>
-<p>無事OSが起動して、各タスクが実行されるようになりました。なおタスク2でUARTにそれっぽいデータを流していますが
-特に何もしていません(QEMU側でブレーク貼るとR/Wは確認可能)。</p>
+<p>無事OSが起動して、各タスクが実行されるようになりました。なおタスク2では動作確認用に
+UART3を用いてコンソール/ターミナルなどにデバッグ表示しています。</p>
 <figure class="align-center" id="fig17">
-<a class="reference internal image-reference" href="_images/fig17.jpg"><img alt="_images/fig17.jpg" src="_images/fig17.jpg" style="width: 613.6999999999999px; height: 585.65px;" /></a>
+<a class="reference internal image-reference" href="_images/fig17.jpg"><img alt="_images/fig17.jpg" src="_images/fig17.jpg" style="width: 665.55px; height: 475.15px;" /></a>
 </figure>
 <p>以上、サンプルプログラムの実行でした。</p>
 </section>
@@ -276,7 +281,12 @@ SysTick以外のタイマの使用を推奨とのことですので、
   <div>
     <h4>前のトピックへ</h4>
     <p class="topless"><a href="nucleo-stm32f746.html"
-                          title="前の章へ">QEMUによるSTM32F746マイコンのエミュレート</a></p>
+                          title="前の章へ">エミュレータの作成とQEMUへの追加</a></p>
+  </div>
+  <div>
+    <h4>次のトピックへ</h4>
+    <p class="topless"><a href="sample_download.html"
+                          title="次の章へ">ダウンロードはこちらから</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>このページ</h3>
@@ -306,9 +316,13 @@ SysTick以外のタイマの使用を推奨とのことですので、
           <a href="genindex.html" title="総合索引"
              >索引</a></li>
         <li class="right" >
-          <a href="nucleo-stm32f746.html" title="QEMUによるSTM32F746マイコンのエミュレート"
+          <a href="sample_download.html" title="ダウンロードはこちらから"
+             >次へ</a> |</li>
+        <li class="right" >
+          <a href="nucleo-stm32f746.html" title="エミュレータの作成とQEMUへの追加"
              >前へ</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">シミュレーション同好会 1.0 ドキュメント</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="qemu-develop.html" >QEMUによるSTM32F746マイコンのエミュレート</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">サンプルプログラムの作成と実行</a></li> 
       </ul>
     </div>

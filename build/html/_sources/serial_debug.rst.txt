@@ -5,12 +5,12 @@ UARTを使ったシリアルデバッグ機能の使い方
 :使用UARTチャネル: USART3(0x40004800)
 
 .. ハイパーリンク定義
-.. _Githubのリポジトリ: https://github.com/TakeshiShiode/QEMU-develop.git
-.. _MSYS2: https://www.msys2.org/
-.. _こちら: https://wiki.qemu.org/Hosts/W32#Native_builds_with_MSYS2
+.. _TOPPERSプロジェクト: https://www.toppers.jp/asp3-e-download.html
+.. _Linuxを始めよう: http://blog.livedoor.jp/hiroumauma/archives/1676244.html
 
 今回のSTM32F746ZGを想定したエミュレータではUARTチャンネルを8ch設けています
 ここでは、その中のUSART3を用いて評価用のシリアルデバッグ(いわゆるprinft)機能の使い方を説明します。
+なお、サンプルプログラムに実装したテスト用printf関数について、`TOPPERSプロジェクト`_ 、および `Linuxを始めよう`_  のサンプルコードを参考にしました。
 
 QEMUのUARTを介して内外部のターミナルに出力する仕組み
 ====================================================

@@ -10,6 +10,6 @@ Contents:
    nucleo-stm32f746
    sample_prg
    sample_download
-
+   serial_debug
 
 
