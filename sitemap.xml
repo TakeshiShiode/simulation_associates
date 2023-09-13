@@ -5,37 +5,43 @@
 <url>
   <loc>https://takeshishiode.github.io/simulation_associates/</loc>
   <priority>1.0</priority>
-  <lastmod>2023-09-03T15:47:48+09:00</lastmod>
+  <lastmod>2023-09-13T15:42:07+09:00</lastmod>
   <changefreq>weekly</changefreq>
 </url>
 <url>
   <loc>https://takeshishiode.github.io/simulation_associates/genindex.html</loc>
   <priority>0.8</priority>
-  <lastmod>2023-09-03T15:47:48+09:00</lastmod>
+  <lastmod>2023-09-13T15:42:07+09:00</lastmod>
   <changefreq>weekly</changefreq>
 </url>
 <url>
   <loc>https://takeshishiode.github.io/simulation_associates/qemu-develop.html</loc>
   <priority>0.8</priority>
-  <lastmod>2023-09-03T15:47:48+09:00</lastmod>
+  <lastmod>2023-09-13T15:42:07+09:00</lastmod>
   <changefreq>weekly</changefreq>
 </url>
 <url>
   <loc>https://takeshishiode.github.io/simulation_associates/nucleo-stm32f746.html</loc>
   <priority>0.8</priority>
-  <lastmod>2023-09-03T15:47:48+09:00</lastmod>
+  <lastmod>2023-09-13T15:42:07+09:00</lastmod>
   <changefreq>weekly</changefreq>
 </url>
 <url>
   <loc>https://takeshishiode.github.io/simulation_associates/sample_prg.html</loc>
   <priority>0.8</priority>
-  <lastmod>2023-09-03T15:47:48+09:00</lastmod>
+  <lastmod>2023-09-13T15:42:07+09:00</lastmod>
+  <changefreq>weekly</changefreq>
+</url>
+<url>
+  <loc>https://takeshishiode.github.io/simulation_associates/serial_debug.html</loc>
+  <priority>0.8</priority>
+  <lastmod>2023-09-13T15:42:07+09:00</lastmod>
   <changefreq>weekly</changefreq>
 </url>
 <url>
   <loc>https://takeshishiode.github.io/simulation_associates/sample_download.html</loc>
   <priority>0.8</priority>
-  <lastmod>2023-09-03T15:47:48+09:00</lastmod>
+  <lastmod>2023-09-13T15:42:07+09:00</lastmod>
   <changefreq>weekly</changefreq>
 </url>
 <url>
@@ -46,13 +52,13 @@
 <url>
   <loc>https://takeshishiode.github.io/simulation_associates/search.html</loc>
   <priority>0.8</priority>
-  <lastmod>2023-09-03T15:47:48+09:00</lastmod>
+  <lastmod>2023-09-13T15:42:07+09:00</lastmod>
   <changefreq>weekly</changefreq>
 </url>
 <url>
   <loc>https://takeshishiode.github.io/simulation_associates/index.html</loc>
   <priority>0.7</priority>
-  <lastmod>2023-09-03T15:47:48+09:00</lastmod>
+  <lastmod>2023-09-13T15:42:07+09:00</lastmod>
   <changefreq>weekly</changefreq>
 </url>
 
