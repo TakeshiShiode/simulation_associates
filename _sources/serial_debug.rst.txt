@@ -21,6 +21,7 @@ QEMUにはchardev(キャラクタデバイス)という機能が設けられて�
 各エミュレータにおけるchardevの割り当て
 ---------------------------------------
 STM32F746エミュレータでの割り当て方法は以下のようになっています。
+
 ::
 
    USART部へのchardev割り当て(QEMU/hw/arm/stm32f746_soc.c)
@@ -37,6 +38,7 @@ STM32F746エミュレータでの割り当て方法は以下のようになっ�
 chardevが割り当てられたデバイス側では、それをどのように使用するかを設定します。
 今回のUSART3では送信レジスタ(TDR)へライトされたデータを出力するようにしました。
 なお、ハードウェア仕様にならって送信中やビジーを表現する各種ステータスレジスタがある場合は都度設定が必要です。
+
 ::
 
    USART側のchardevへデータを出力する部分(QEMU/hw/char/stm32f746_uart.c)
@@ -49,6 +51,7 @@ chardevが割り当てられたデバイス側では、それをどのように�
             /* ステータスレジスタを"送信完了"にする */
             s->usart_isr |= USART_SR_TC;
         }
+
 
 外部ターミナル及びコンソールへの表示設定
 ========================================
@@ -91,6 +94,7 @@ serialserial_hd(1)がserial1のようになっています。STM32F746マイコ�
      - UART8
      -
 
+
 というわけでQEMUでUSART3を出力するには、serial2を表示する必要があります。これを実現するために、QEMUの実行コマンド
 に"-serial"設定を追加します。
 
@@ -99,6 +103,7 @@ serialserial_hd(1)がserial1のようになっています。STM32F746マイコ�
    QEMU起動コマンドに "-serial vc"を追加
    ./qemu-system-arm -S -gdb tcp::1234 -M nucleo-stm32-f746 -serial vc -serial vc -serial vc
    -kernel /c/ワークスペースのパス/Debug/nucleo-stm32f746.elf
+
 
 コマンド中に"-serial vc"が3セット含まれています。これは"serial0"、"serial1"、"serial2"をQEMUのViewメニューに表示するためです。
 以下にserialコマンドの数を変えた場合にQEMUコンソールを示します。
@@ -109,6 +114,7 @@ serialserial_hd(1)がserial1のようになっています。STM32F746マイコ�
    :align: center
 
    :serialコマンド数とViewメニュー中のseiral(ch)の対応
+
 
 serial2を表示した状態でサンプルプログラムを実行すると、デバッグ表示が確認できます。
 

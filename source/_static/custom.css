@@ -3,3 +3,11 @@
 .. rst-class:: stext{
     text-align: center; 
 }
+
+/*div.body p, div.body dd, div.body li, div.body blockquote  {
+    text-align: center;
+}*/
+
+figcaption p {
+    text-align: center !important;
+}
