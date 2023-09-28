@@ -3,6 +3,7 @@
 =========================================
 
 :エミュレータ: QEMU-8.1.0
+:想定評価ボード: NUCLEO-F746ZG(Nucleo-144:STM32F746ZG)
 
 .. ハイパーリンク定義
 .. _STM32F7x6関連のドキュメント: https://www.st.com/en/microcontrollers-microprocessors/stm32f7x6/documentation.html
